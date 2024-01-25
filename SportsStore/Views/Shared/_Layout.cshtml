@@ -5,12 +5,21 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.min.css">
     <title>SportsStore</title>
 </head>
 
 <body>
-    <div>
-        @RenderBody()
+    <div class="bg-dark text-white p-2">
+        <span class="navbar-brand ml-2"> SPORTS STORE </span>
+    </div>
+    <div class="row m-1 p-1">
+        <div id="categories" class="col-3">
+            Put something useful here later
+        </div>
+        <div class="col-9">
+            @RenderBody()
+        </div>
     </div>
 </body>
 
