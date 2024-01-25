@@ -16,19 +16,33 @@ public class HomeController : Controller
     }
 
     [HttpGet]
-    public IActionResult Index(int productPage = 1)
+    public IActionResult Index(string? category, int productPage = 1)
     {
-        // Pagination
-        var products = new ProductsListViewModel
+
+        var products = repository.Products
+                     .Where(p => category == null || p.Category == category);
+
+        var paginatedProducts = products.OrderBy(p => p.Id)
+                     .Skip((productPage - 1) * PageSize)
+                     .Take(PageSize);
+
+
+        var totalItems = repository.Products.Where(p => category == null || p.Category == category).Count();
+
+        var pagingInfo = new PagingInfo
         {
-            Products = repository.Products.OrderBy(p => p.Id).Skip((productPage - 1) * PageSize).Take(PageSize),
-            PagingInfo = new PagingInfo
-            {
-                CurrentPage = productPage,
-                ItemsPerPage = PageSize,
-                TotalItems = repository.Products.Count()
-            }
+            CurrentPage = productPage,
+            ItemsPerPage = PageSize,
+            TotalItems = totalItems
         };
-        return View(products);
+
+        // Pagination
+        var filteredProducts = new ProductsListViewModel
+        {
+            Products = paginatedProducts,
+            PagingInfo = pagingInfo,
+            CurrentCategory = category
+        };
+        return View(filteredProducts);
     }
 }
